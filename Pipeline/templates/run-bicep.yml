@@ -34,7 +34,7 @@ stages:
                 - task: AzureCLI@2
                   inputs:
                     azureSubscription: ${{parameters.serviceConnection}}
-                    scriptType: 'bash'
+                    scriptType: 'ps'
                     scriptLocation: 'inlineScript'
                     inlineScript: |
                       # Deploy the Bicep template to the specified resource group
