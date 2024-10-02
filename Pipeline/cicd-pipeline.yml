@@ -15,10 +15,10 @@ parameters:
     
 # the following are parameters that can be used anywhere in this yml code
   
-  - name: notebooksPath
-    value: "DLT_pipeline"
-  - name: location
-    value: "eastus"
+#  - name: notebooksPath
+#    value: "DLT_pipeline"
+#  - name: location
+#    value: "eastus"
 
 # compute power that Microsoft provides to execute a CI/CD pipeline in devops (https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml)
 pool: 
