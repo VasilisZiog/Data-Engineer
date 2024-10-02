@@ -1,4 +1,6 @@
 parameters: 
+  - name: stageid
+    type: string
   - name: resourceGroupName
     type: string
   - name: location
