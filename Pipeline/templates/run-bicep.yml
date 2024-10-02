@@ -38,7 +38,7 @@ stages:
                     scriptLocation: 'inlineScript'
                     inlineScript: |
                       # Deploy the Bicep template to the specified resource group
-                      az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.bicepTemplateFile }} --parameters ${{ parameters.bicepParametersFile }} --location ${{ parameters.location }}
+                      az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.bicepTemplateFile }} --parameters ${{ parameters.bicepParametersFile }}
 
 
 
