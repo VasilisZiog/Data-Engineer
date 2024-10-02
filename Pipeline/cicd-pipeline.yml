@@ -63,11 +63,10 @@ stages:
                   scriptType: 'ps'  # Use PowerShell
                   scriptLocation: 'inlineScript'  # Inline script
                   inlineScript: |
-                    # Change directory to where your script is located
                     cd $(Build.SourcesDirectory)/Pipeline/ARM
-
-                    # Execute the PowerShell script
-                    .\RegisterIntegrationRuntime2.ps1
-
-                    # Optional: add logging or further processing
-                    Write-Host "Integration Runtime configuration completed."
+                  
+                    $integrationRuntimeKey = '${{ parameters.integrationRuntimeKey }}'
+                  
+                    .\RegisterIntegrationRuntime2.ps1 -RuntimeKey $integrationRuntimeKey
+                    
+                    Write-Host "Integration Runtime configured with key: $integrationRuntimeKey"
