@@ -43,31 +43,39 @@ stages:
       bicepTemplateFile: "Pipeline/ARM/main_part1.bicep"
       bicepParametersFile: "Pipeline/ARM/main_part1.bicepparam"
 
-#stage 2: configure integration runtime
-  - stage: "Configure_integartion_runtime1"
-    displayName: "Configure Integration Runtime of Data Factory1"
+# Manual approval step before proceeding to the second stage
+  - stage: "Approve_and_Configure_Integration_Runtime"
+    displayName: "Approve and Configure Integration Runtime"
+    dependsOn: Deploy_part1_to_Dev_Environment
     jobs:
-    - deployment: Deploy
-      displayName: "Configure Integration Runtime of Data Factory2"
-      environment: $(dev-environment-name)
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-              - checkout: self
+      - job: ManualApproval
+        displayName: "Manual Approval for Integration Runtime Configuration"
+        steps:
+          - task: ManualValidation@0
+            inputs:
+              instructions: "Please input the Integration Runtime Key and approve the process."
+              onTimeout: "reject"  # You can choose to auto-reject on timeout
 
-              # Azure CLI Task to run PowerShell script
-              - task: AzureCLI@2
-                inputs:
-                  azureSubscription: $(dev-service-connection-name)  # Service Connection Name
-                  scriptType: 'ps'  # Use PowerShell
-                  scriptLocation: 'inlineScript'  # Inline script
-                  inlineScript: |
-                    # Change directory to where your script is located
-                    cd $(Build.SourcesDirectory)/Pipeline/ARM
+      - job: ConfigureIntegrationRuntime
+        displayName: "Configuring Integration Runtime"
+        dependsOn: ManualApproval
+        condition: succeeded('ManualApproval')  # Only run if manual approval succeeded
+        steps:
+          - checkout: self
 
-                    # Execute the PowerShell script
-                    .\RegisterIntegrationRuntime2.ps1
+          # PowerShell task for configuring the Integration Runtime
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: $(dev-service-connection-name)
+              scriptType: 'ps'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                cd $(Build.SourcesDirectory)/Pipeline/ARM
 
-                    # Optional: add logging or further processing
-                    Write-Host "Integration Runtime configuration completed."
+                # Use the runtime parameter provided in manual approval (for simplicity, using the pipeline parameter here)
+                $integrationRuntimeKey = '${{ parameters.integrationRuntimeKey }}'
+
+                # Pass the parameter value to the PowerShell script
+                .\RegisterIntegrationRuntime2.ps1 -RuntimeKey $integrationRuntimeKey
+
+                Write-Host "Integration Runtime configured with key: $integrationRuntimeKey"
