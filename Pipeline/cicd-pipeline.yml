@@ -63,9 +63,9 @@ stages:
                   scriptType: 'ps'  # Use PowerShell
                   scriptLocation: 'inlineScript'  # Inline script
                   inlineScript: |
-                    $integrationRuntimeKey = '${{ integrationRuntimeKey }}'
-                    Write-Host "Integration Runtime configured with key: $integrationRuntimeKey"
-                    C:\Users\vziog\Documents\VZ\projects\Data_engineer\agent\_work\3\s\Pipeline\ARM\RegisterIntegrationRuntime.ps1 -GatewayKey $integrationRuntimeKey -IsRegisterOnRemoteMachine false
+                    
+                    Write-Host "Integration Runtime configured with key:" $(integrationRuntimeKey)
+                    C:\Users\vziog\Documents\VZ\projects\Data_engineer\agent\_work\3\s\Pipeline\ARM\RegisterIntegrationRuntime.ps1 -GatewayKey $(integrationRuntimeKey) -IsRegisterOnRemoteMachine false
 
                     
 
