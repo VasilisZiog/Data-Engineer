@@ -26,7 +26,7 @@ stages:
 #stage 1: deployment of resources that are managed from resource manager part1
   - template: templates/run-bicep.yml
     parameters:
-      stageid: "Deploy_to_Dev_Environment"
+      stageid: "Deploy_part1_to_Dev_Environment"
       env: "dev"
 # this is the environment of devops where you can manage deployments, view resource status, etc
       environmentName: $(dev-environment-name)
@@ -37,4 +37,31 @@ stages:
       bicepTemplateFile: "Pipeline/ARM/main_part1.bicep"
       bicepParametersFile: "Pipeline/ARM/main_part1.bicepparam"
 
+#stage 2: configure integration runtime
+  - stage: "Configure integartion runtime1"
+    displayName: "Configure Integration Runtime of Data Factory1"
+    jobs:
+    - deployment: Deploy
+      displayName: "Configure Integration Runtime of Data Factory2"
+      environment: ${{ parameters.environmentName }}
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - checkout: self
 
+              # Azure CLI Task to run PowerShell script
+              - task: AzureCLI@2
+                inputs:
+                  azureSubscription: ${{ parameters.serviceConnection }}  # Service Connection Name
+                  scriptType: 'ps'  # Use PowerShell
+                  scriptLocation: 'inlineScript'  # Inline script
+                  inlineScript: |
+                    # Change directory to where your script is located
+                    cd $(Build.SourcesDirectory)/Pipeline/ARM
+
+                    # Execute the PowerShell script
+                    .\RegisterIntegrationRuntime2.ps1
+
+                    # Optional: add logging or further processing
+                    Write-Host "Integration Runtime configuration completed."

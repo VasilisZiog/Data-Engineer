@@ -22,7 +22,7 @@ stages:
     #dependsOn: ${{ parameters.dependson }}
     jobs:
       - deployment: Deploy
-        displayName: "Deploying Databricks Notebooks"
+        displayName: "Deploying part1"
         environment: ${{parameters.environmentName}}
         strategy:
           runOnce:
