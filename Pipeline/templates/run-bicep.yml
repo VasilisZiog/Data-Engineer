@@ -19,7 +19,7 @@ parameters:
 stages: 
   - stage: "${{ parameters.stageId }}"
     displayName: "Deploying to [${{upper(parameters.env)}}] Environment"
-    dependsOn: ${{ parameters.dependson }}
+    #dependsOn: ${{ parameters.dependson }}
     jobs:
       - deployment: Deploy
         displayName: "Deploying Databricks Notebooks"
