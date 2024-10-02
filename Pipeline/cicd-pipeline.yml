@@ -5,12 +5,14 @@ trigger:
 # in azure devops there is a variable group with the following name which contains variables that will be used for the deployment in each environment
 variables:
   - group: dbw-cicd-dev
-  - group: dbw-cicd-preprod
+  
 
 # the following are parameters that can be used anywhere in this yml code
   
   - name: notebooksPath
     value: "DLT_pipeline"
+  - name: location
+    value: "eastus"
 
 # compute power that Microsoft provides to execute a CI/CD pipeline in devops (https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml)
 pool: 
@@ -18,29 +20,21 @@ pool:
   demands: agent.name -equals ZIOGOU-NB
 
 
-# below are defined the variables that are going to be usedand paased to the template file deploy-notebooks.yml
+# below are defined the stages
 stages:
-  - template: templates/deploy-notebooks.yml
+
+#stage 1: deployment of resources that are managed from resource manager part1
+  - template: templates/run-bicep.yml
     parameters:
       stageid: "Deploy_to_Dev_Environment"
       env: "dev"
 # this is the environment of devops where you can manage deployments, view resource status, etc
       environmentName: $(dev-environment-name)
       resourceGroupName: $(dev-resource-group-name)
+      location: $(location)
 # this is the service connecion to the resource group where dev databricks workspace is (recommended type is service principal automatic through resource manager)
       serviceConnection: $(dev-service-connection-name)
-# the folder that contains the notebooks that are going to be moved through the CI/CD pipeline 
-      notebooksPath: $(notebooksPath)\
+      bicepTemplateFile: "ARM/main_part1.bicep"
+      bicepParametersFile: "ARM/main_part1.bicepparam"
 
-  - template: templates/deploy-notebooks.yml
-    parameters:    
-      dependsOn: ["Deploy_to_Dev_Environment"]
-      stageid: "Deploy_to_PreProd_Environment"
-      env: "preprod"
-# this is the environment of devops where you can manage deployments, view resource status, etc
-      environmentName: $(preprod-environment-name)
-      resourceGroupName: $(preprod-resource-group-name)
-# this is the service connecion to the resource group where preprod databricks workspace is (recommended type is service principal automatic through resource manager)
-      serviceConnection: $(preprod-service-connection-name)
-# the folder that contains the notebooks that are going to be moved through the CI/CD pipeline 
-      notebooksPath: $(notebooksPath)
+

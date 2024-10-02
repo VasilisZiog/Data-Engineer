@@ -1,0 +1,42 @@
+parameters: 
+  - name: resourceGroupName
+    type: string
+  - name: location
+    type: string
+  - name: env
+    type: string
+  - name: environmentName
+    type: string
+  - name: bicepTemplateFile
+    type: string
+  - name: bicepParametersFile
+    type: string
+  - name: serviceConnection
+    type: string
+
+stages: 
+  - stage: "${{ parameters.stageId }}"
+    displayName: "Deploying to [${{upper(parameters.env)}}] Environment"
+    dependsOn: ${{ parameters.dependson }}
+    jobs:
+      - deployment: Deploy
+        displayName: "Deploying Databricks Notebooks"
+        environment: ${{parameters.environmentName}}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                
+                
+                - task: AzureCLI@2
+                  inputs:
+                    azureSubscription: ${{parameters.serviceConnection}}
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      # Deploy the Bicep template to the specified resource group
+                      az deployment group create --resource-group ${{ parameters.resourceGroupName }} --template-file ${{ parameters.bicepTemplateFile }} --parameters ${{ parameters.bicepParametersFile }} --location ${{ parameters.location }}
+
+
+
