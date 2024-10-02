@@ -34,7 +34,7 @@ stages:
       location: $(location)
 # this is the service connecion to the resource group where dev databricks workspace is (recommended type is service principal automatic through resource manager)
       serviceConnection: $(dev-service-connection-name)
-      bicepTemplateFile: "ARM/main_part1.bicep"
-      bicepParametersFile: "ARM/main_part1.bicepparam"
+      bicepTemplateFile: "Pipeline/ARM/main_part1.bicep"
+      bicepParametersFile: "Pipeline/ARM/main_part1.bicepparam"
 
 
