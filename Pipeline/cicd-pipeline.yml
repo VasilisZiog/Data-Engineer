@@ -43,7 +43,7 @@ stages:
     jobs:
     - deployment: Deploy
       displayName: "Configure Integration Runtime of Data Factory2"
-      environment: ${{ variables.environmentName }}
+      environment: $(dev-environment-name)
       strategy:
         runOnce:
           deploy:
@@ -53,7 +53,7 @@ stages:
               # Azure CLI Task to run PowerShell script
               - task: AzureCLI@2
                 inputs:
-                  azureSubscription: ${{ variables.serviceConnection }}  # Service Connection Name
+                  azureSubscription: $(dev-service-connection-name)  # Service Connection Name
                   scriptType: 'ps'  # Use PowerShell
                   scriptLocation: 'inlineScript'  # Inline script
                   inlineScript: |
