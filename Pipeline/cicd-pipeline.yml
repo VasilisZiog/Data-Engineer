@@ -12,7 +12,7 @@ parameters:
     displayName: "Integration Runtime Key"
     type: string
     default: ""
-    values:
+    
 # the following are parameters that can be used anywhere in this yml code
   
   - name: notebooksPath
