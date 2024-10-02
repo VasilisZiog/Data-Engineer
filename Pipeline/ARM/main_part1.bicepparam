@@ -6,7 +6,7 @@ param principalId = '4b353188-4170-4737-b9a7-08c40e18d1ba' //vasilis ziogou prof
 param location='eastus'
 param userpswd = 'vz1234567890!'
 param blobContainerName = 'containertest1991vz'
-param strgVassilis = 'storagetest1991vz'//change also in part2
+param strgVassilis = 'storagetest1991vz2'//change also in part2
 param dataFactoryName = 'datafactorytest1991vz'//change also in part2
 param integrationRuntimeName = 'itegrationRuntime1'
 
