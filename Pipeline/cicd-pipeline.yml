@@ -4,7 +4,7 @@ trigger:
 
 # in azure devops there is a variable group with the following name which contains variables that will be used for the deployment in each environment
 variables:
-  - group: dbw-cicd-dev
+  - group: group1
   
 
 # the following are parameters that can be used anywhere in this yml code
