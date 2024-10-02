@@ -7,11 +7,11 @@ variables:
   - group: group1
 
 # Define runtime parameters
-parameters:
-  - name: integrationRuntimeKey
-    displayName: "Integration Runtime Key"
-    type: string
-    default: ""
+#parameters:
+#  - name: integrationRuntimeKey
+#    displayName: "Integration Runtime Key"
+#    type: string
+#    default: ""
     
 # the following are parameters that can be used anywhere in this yml code
   
@@ -63,12 +63,10 @@ stages:
                   scriptType: 'ps'  # Use PowerShell
                   scriptLocation: 'inlineScript'  # Inline script
                   inlineScript: |
-                    cd $(Build.SourcesDirectory)/Pipeline/ARM
-                  
-                    $integrationRuntimeKey = '${{ parameters.integrationRuntimeKey }}'
-                  
-                    .\RegisterIntegrationRuntime.ps1 -GatewayKey $integrationRuntimeKey -IsRegisterOnRemoteMachine false
-
+                    $integrationRuntimeKey = '${{ integrationRuntimeKey }}'
                     Write-Host "Integration Runtime configured with key: $integrationRuntimeKey"
+                    C:\Users\vziog\Documents\VZ\projects\Data_engineer\agent\_work\3\s\Pipeline\ARM\RegisterIntegrationRuntime.ps1 -GatewayKey $integrationRuntimeKey -IsRegisterOnRemoteMachine false
+
+                    
 
                     
