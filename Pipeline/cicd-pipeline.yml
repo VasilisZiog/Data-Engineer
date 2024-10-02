@@ -67,6 +67,8 @@ stages:
                   
                     $integrationRuntimeKey = '${{ parameters.integrationRuntimeKey }}'
                   
-                    .\RegisterIntegrationRuntime2.ps1 -RuntimeKey $integrationRuntimeKey
-                    
+                    .\RegisterIntegrationRuntime.ps1 -GatewayKey $integrationRuntimeKey -IsRegisterOnRemoteMachine false
+
                     Write-Host "Integration Runtime configured with key: $integrationRuntimeKey"
+
+                    

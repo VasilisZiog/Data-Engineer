@@ -9,9 +9,9 @@ param
 )
 
 # Prompt for the gateway key if not provided
-if (-not $gatewayKey) {
-    $gatewayKey = Read-Host "Please provide the Integration Runtime key to register"
-}
+#if (-not $gatewayKey) {
+#    $gatewayKey = Read-Host "Please provide the Integration Runtime key to register"
+#}
 
 $newRegistryPath = "Software\Microsoft\DataTransfer\DataManagementGateway\ConfigurationManager"
 $oldRegistryPath = "Software\Microsoft\DataTransfer\DataManagementGateway\HostService\Hdis"
