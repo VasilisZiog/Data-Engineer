@@ -38,7 +38,7 @@ stages:
       bicepParametersFile: "Pipeline/ARM/main_part1.bicepparam"
 
 #stage 2: configure integration runtime
-  - stage: "Configure integartion runtime1"
+  - stage: "Configure_integartion_runtime1"
     displayName: "Configure Integration Runtime of Data Factory1"
     jobs:
     - deployment: Deploy
