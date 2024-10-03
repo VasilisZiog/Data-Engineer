@@ -7,6 +7,8 @@ parameters:
     type: string
   - name: env
     type: string
+  - name: part
+    type: string
   - name: environmentName
     type: string
   - name: bicepTemplateFile
