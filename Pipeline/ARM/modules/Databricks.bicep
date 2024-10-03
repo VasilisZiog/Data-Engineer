@@ -1,6 +1,3 @@
-@description('Location of the Databricks workspace.')
-param location string
-
 @description('Name of the Databricks workspace.')
 param workspaceName string
 
@@ -9,7 +6,7 @@ param workspaceName string
   'standard'
   'premium'
 ])
-param tier string = 'premium'
+param tier string 
 
 @description('Enable "No Public IP" feature.')
 param enableNoPublicIp bool
@@ -25,7 +22,7 @@ var managedResourceGroupId = resourceId('Microsoft.Resources/resourceGroups', ma
 
 resource databricksWorkspace 'Microsoft.Databricks/workspaces@2024-05-01' = {
   name: workspaceName
-  location: location
+  location: resourceGroup().location
   sku: {
     name: tier
   }
