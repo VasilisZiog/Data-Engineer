@@ -34,38 +34,54 @@ stages:
     parameters:
       stageid: "Deploy_part1_to_Dev_Environment"
       env: "dev"
-# this is the environment of devops where you can manage deployments, view resource status, etc
+      part: 'part1'
+      # this is the environment of devops where you can manage deployments, view resource status, etc
       environmentName: $(dev-environment-name)
       resourceGroupName: $(dev-resource-group-name)
       location: $(location)
-# this is the service connecion to the resource group where dev databricks workspace is (recommended type is service principal automatic through resource manager)
+      # this is the service connecion to the resource group where dev databricks workspace is (recommended type is service principal automatic through resource manager)
       serviceConnection: $(dev-service-connection-name)
       bicepTemplateFile: "Pipeline/ARM/main_part1.bicep"
       bicepParametersFile: "Pipeline/ARM/main_part1.bicepparam"
 
 #stage 2: configure integration runtime
-  - stage: "Configure_integartion_runtime1"
-    displayName: "Configure Integration Runtime of Data Factory1"
-    jobs:
-    - deployment: Deploy
-      displayName: "Configure Integration Runtime of Data Factory2"
-      environment: 'IntegrationRuntimeApproval'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-              - checkout: self
+#  - stage: "Configure_integartion_runtime1"
+#    displayName: "Configure Integration Runtime of Data Factory1"
+#    jobs:
+#    - deployment: Deploy
+#      displayName: "Configure Integration Runtime of Data Factory2"
+#      environment: 'IntegrationRuntimeApproval'
+#      
+#      strategy:
+#        runOnce:
+#          deploy:
+#            steps:
+#              - checkout: self
+#
+#              # Azure CLI Task to run PowerShell script
+#              - task: AzureCLI@2
+#                inputs:
+#                  azureSubscription: $(dev-service-connection-name)  # Service Connection Name
+#                  scriptType: 'ps'  # Use PowerShell
+#                  scriptLocation: 'inlineScript'  # Inline script
+#                  inlineScript: |
+#                    cd $(Build.SourcesDirectory)/Pipeline/ARM
+#                    .\RegisterIntegrationRuntime2.ps1 -GatewayKey $(integrationRuntimeKey) -IsRegisterOnRemoteMachine false
 
-              # Azure CLI Task to run PowerShell script
-              - task: AzureCLI@2
-                inputs:
-                  azureSubscription: $(dev-service-connection-name)  # Service Connection Name
-                  scriptType: 'ps'  # Use PowerShell
-                  scriptLocation: 'inlineScript'  # Inline script
-                  inlineScript: |
-                    cd $(Build.SourcesDirectory)/Pipeline/ARM
-                    .\RegisterIntegrationRuntime2.ps1 -GatewayKey $(integrationRuntimeKey) -IsRegisterOnRemoteMachine false
-
+#stage 2: deployment of resources that are managed from resource manager part2
+  - template: templates/run-bicep.yml
+    parameters:
+      stageid: "Deploy_part2_to_Dev_Environment"
+      env: "dev"
+      part: 'part2'
+      # this is the environment of devops where you can manage deployments, view resource status, etc
+      environmentName: 'part2withApproval'
+      resourceGroupName: $(dev-resource-group-name)
+      location: $(location)
+      # this is the service connecion to the resource group where dev databricks workspace is (recommended type is service principal automatic through resource manager)
+      serviceConnection: $(dev-service-connection-name)
+      bicepTemplateFile: "Pipeline/ARM/main_part2.bicep"
+      bicepParametersFile: "Pipeline/ARM/main_part2.bicepparam"
                     
 
                     

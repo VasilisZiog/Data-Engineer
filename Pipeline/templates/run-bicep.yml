@@ -22,7 +22,7 @@ stages:
     #dependsOn: ${{ parameters.dependson }}
     jobs:
       - deployment: Deploy
-        displayName: "Deploying part1"
+        displayName: "Deploying [${{parameters.part}}]"
         environment: ${{parameters.environmentName}}
         strategy:
           runOnce:
