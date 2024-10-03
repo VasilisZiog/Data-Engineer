@@ -33,7 +33,6 @@ stages:
   - template: templates/run-bicep.yml
     parameters:
       stageid: "Deploy_part1_to_Dev_Environment"
-      env: "dev"
       part: 'part1'
       # this is the environment of devops where you can manage deployments, view resource status, etc
       environmentName: $(dev-environment-name)
@@ -72,7 +71,6 @@ stages:
   - template: templates/run-bicep.yml
     parameters:
       stageid: "Deploy_part2_to_Dev_Environment"
-      env: "dev"
       part: 'part2'
       # this is the environment of devops where you can manage deployments, view resource status, etc
       environmentName: 'part2withApproval'

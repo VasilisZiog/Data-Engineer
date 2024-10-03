@@ -8,8 +8,8 @@ param workspaceName string
 ])
 param tier string 
 
-@description('Enable "No Public IP" feature.')
-param enableNoPublicIp bool
+@description('Enable No Public IP for the workspace.')
+param enableNoPublicIp bool= true
 
 @description('Tags to be applied to the Databricks workspace.')
 param tagValues object

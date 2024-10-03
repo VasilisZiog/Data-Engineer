@@ -5,8 +5,6 @@ parameters:
     type: string
   - name: location
     type: string
-  - name: env
-    type: string
   - name: part
     type: string
   - name: environmentName
@@ -20,11 +18,11 @@ parameters:
 
 stages: 
   - stage: "${{ parameters.stageId }}"
-    displayName: "Deploying to [${{upper(parameters.env)}}] Environment"
+    displayName: "Deploying [${{parameters.part}}]"
     #dependsOn: ${{ parameters.dependson }}
     jobs:
       - deployment: Deploy
-        displayName: "Deploying [${{parameters.part}}]"
+        displayName: "Deploying to [${{upper(parameters.environmentName)}}] Environment" 
         environment: ${{parameters.environmentName}}
         strategy:
           runOnce:
