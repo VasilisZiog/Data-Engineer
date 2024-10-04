@@ -101,7 +101,7 @@ stages:
                     scriptType: 'ps'  # Use PowerShell
                     scriptLocation: 'inlineScript'  # Inline script
                     inlineScript: |  
-                      az deployment sub create --location 'eastus' --template-file "Pipeline/ARM/ManagedResourceGroup.bicep"
+                      az deployment sub create --location 'eastus' --template-file "Pipeline/ARM/modules/ManagedResourceGroup.bicep"
 
 #stage 4: configure integration runtime
   - stage: "Deploy_databricks"
@@ -124,4 +124,4 @@ stages:
                   scriptType: 'ps'  # Use PowerShell
                   scriptLocation: 'inlineScript'  # Inline script
                   inlineScript: |
-                    az deployment group create --resource-group 'dp203' --template-file <Pipeline/ARM/Databricks.bicep>
+                    az deployment group create --resource-group 'dp203' --template-file "Pipeline/ARM/modules/Databricks.bicep"
