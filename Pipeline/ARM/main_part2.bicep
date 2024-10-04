@@ -38,13 +38,3 @@ module ADFobjects 'modules/ADFobjects.bicep'={
 
 
 
-module Databricks 'modules/Databricks.bicep'={
-  scope: resourceGroup()
-  name:'Databricks_demoProject'
-  params:{
-    workspaceName: workspaceName
-    tier: tier
-    enableNoPublicIp: enableNoPublicIp
-    tagValues: tagValues
-  }
-}
