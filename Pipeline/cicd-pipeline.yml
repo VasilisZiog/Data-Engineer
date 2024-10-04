@@ -82,4 +82,46 @@ stages:
       bicepParametersFile: "Pipeline/ARM/main_part2.bicepparam"
                     
 
-                    
+#stage 3: "configure integration runtime"
+  - stage: "Deploy managed resource group"
+    displayName: "Deploy on Sub level"
+    jobs:
+      - deployment: Deploy
+        displayName: "kati"
+        environment: $(dev-environment-name)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self#
+                # Azure CLI Task to run PowerShell script
+                - task: AzureCLI@2
+                  inputs:
+                    azureSubscription: $(dev-service-connection-name)  # Service Connection Name
+                    scriptType: 'ps'  # Use PowerShell
+                    scriptLocation: 'inlineScript'  # Inline script
+                    inlineScript: |  
+                      az deployment sub create --location 'eastus' --template-file "Pipeline/ARM/ManagedResourceGroup.bicep"
+
+#stage 4: configure integration runtime
+  - stage: "Deploy databricks"
+    displayName: "Deploy databricks on dev"
+    jobs:
+    - deployment: Deploy
+      displayName: "Deploy databricks on dev 2"
+      environment: $(dev-environment-name)
+      
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - checkout: self
+
+              # Azure CLI Task to run PowerShell script
+              - task: AzureCLI@2
+                inputs:
+                  azureSubscription: $(dev-service-connection-name)  # Service Connection Name
+                  scriptType: 'ps'  # Use PowerShell
+                  scriptLocation: 'inlineScript'  # Inline script
+                  inlineScript: |
+                    az deployment group create --resource-group 'dp203' --template-file <Pipeline/ARM/Databricks.bicep>

@@ -14,11 +14,17 @@ param enableNoPublicIp bool= true
 @description('Tags to be applied to the Databricks workspace.')
 param tagValues object
 
-// Automatically generate the managed resource group name if not specified
-var managedResourceGroupName = 'databricks-rg-${workspaceName}-${uniqueString(workspaceName, resourceGroup().id)}'
+param managedResourceGroupName string='databricks-managed-rg-demo'
+
+
+
+resource managedRG 'Microsoft.DataFactory/factories@2018-06-01' existing = {
+  name: managedResourceGroupName
+}
 
 // Managed resource group ID using resourceId function
 var managedResourceGroupId = resourceId('Microsoft.Resources/resourceGroups', managedResourceGroupName)
+
 
 resource databricksWorkspace 'Microsoft.Databricks/workspaces@2024-05-01' = {
   name: workspaceName
@@ -39,4 +45,7 @@ resource databricksWorkspace 'Microsoft.Databricks/workspaces@2024-05-01' = {
     }
   }
   tags: tagValues
+  dependsOn: [
+    managedRG
+  ]
 }

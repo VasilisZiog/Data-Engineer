@@ -18,7 +18,7 @@ param workspaceName string
   'standard'
   'premium'
 ])
-param tier string = 'premium'
+param tier string 
 
 @description('Enable "No Public IP" feature.')
 param enableNoPublicIp bool
