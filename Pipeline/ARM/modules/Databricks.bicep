@@ -1,18 +1,18 @@
 @description('Name of the Databricks workspace.')
-param workspaceName string
+param workspaceName string='testziog91'
 
 @description('Tier of the Databricks workspace (e.g., standard or premium).')
 @allowed([
   'standard'
   'premium'
 ])
-param tier string 
+param tier string ='premium'
 
 @description('Enable No Public IP for the workspace.')
 param enableNoPublicIp bool= true
 
 @description('Tags to be applied to the Databricks workspace.')
-param tagValues object
+param tagValues object={}
 
 param managedResourceGroupName string='databricks-managed-rg-demo'
 
