@@ -83,7 +83,7 @@ stages:
                     
 
 #stage 3: "configure integration runtime"
-  - stage: "Deploy managed resource group"
+  - stage: "Deploy_managed_resource_group"
     displayName: "Deploy on Sub level"
     jobs:
       - deployment: Deploy
@@ -93,7 +93,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - checkout: self#
+                - checkout: self
                 # Azure CLI Task to run PowerShell script
                 - task: AzureCLI@2
                   inputs:
@@ -104,7 +104,7 @@ stages:
                       az deployment sub create --location 'eastus' --template-file "Pipeline/ARM/ManagedResourceGroup.bicep"
 
 #stage 4: configure integration runtime
-  - stage: "Deploy databricks"
+  - stage: "Deploy_databricks"
     displayName: "Deploy databricks on dev"
     jobs:
     - deployment: Deploy
